@@ -209,3 +209,20 @@ flowchart LR
   - Shipment flow
 
 
+
+---
+
+## 🧠 Why Mermaid is the right choice (enterprise insight)
+
+- Lives **inside Git**
+- Version-controlled
+- Easy to review in PRs
+- No external diagram tools required
+- Matches modern documentation standards
+
+Most senior teams now prefer **diagram-as-code**.
+
+---
+
+## ✅ Final Docs Structure (Perfect)
+
