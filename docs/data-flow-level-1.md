@@ -160,6 +160,3 @@ v
   - Shipment flow
 
 
-
-## 7. DFD Level 1 – Conceptual View (Textual)
-
