@@ -90,7 +90,25 @@ The platform manages:
 | External Partner | <-------------------------> | |
 +-------------------+ +---------------------------+
 
+## DFD Level 0 – System Context
 
+```mermaid
+flowchart LR
+    Customer[Customer]
+    OpsUser[Operations User]
+    Partner[External Partner System]
+
+    System[Smart Logistics Platform]
+
+    Customer -->|Order Requests| System
+    System -->|Order & Shipment Status| Customer
+
+    OpsUser -->|Operational Commands| System
+    System -->|Dashboards & Alerts| OpsUser
+
+    Partner -->|Shipment Updates| System
+    System -->|Order & Shipment Data| Partner
+```
 ---
 
 ## 6. Notes
