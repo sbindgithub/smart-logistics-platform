@@ -144,6 +144,55 @@ v
 +--------------------+
 
 
+### What this shows
+- One **single system boundary**
+- External actors only
+- No internal services or databases (by design)
+
+✔ Business-friendly  
+✔ Audit-friendly  
+✔ Enterprise-correct
+
+---
+
+# 📊 DFD Level 1 – Order Processing Flow
+
+📄 Put this **below Level 0** in the same file (or separate file if you prefer).
+
+```md
+## DFD Level 1 – Order Processing Flow
+
+```mermaid
+flowchart LR
+    Customer[Customer]
+
+    OrderAPI[Order API]
+    OrderProcessing[Order Processing]
+    InventoryValidation[Inventory Validation]
+    ShipmentInit[Shipment Initialization]
+    EventPublishing[Event Publishing]
+
+    OrderDB[(Order Database)]
+    InventoryDB[(Inventory Database)]
+    EventStore[(Event Store / Message Broker)]
+
+    Customer -->|Order Request| OrderAPI
+    OrderAPI -->|Validated Command| OrderProcessing
+
+    OrderProcessing -->|Create / Update Order| OrderDB
+    OrderProcessing -->|Check Availability| InventoryValidation
+
+    InventoryValidation -->|Read / Reserve Stock| InventoryDB
+    InventoryValidation -->|Availability Result| OrderProcessing
+
+    OrderProcessing -->|Initiate Shipment| ShipmentInit
+    ShipmentInit -->|Update Order with Shipment Ref| OrderDB
+
+    OrderProcessing -->|Order Event| EventPublishing
+    EventPublishing -->|Publish Event| EventStore
+
+    OrderAPI -->|Order Confirmation| Customer
+```
 ---
 
 ## 8. Notes
