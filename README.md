@@ -1,8 +1,10 @@
 # 🚀 Smart Logistics Platform
 
-A **cloud-native, event-driven logistics platform** built with **ASP.NET Core** to manage **orders, inventory, shipments, and real-time tracking** using modern enterprise architecture and DevOps practices.
+A cloud-native, event-driven logistics platform built with ASP.NET Core, designed using a microservices architecture to manage orders, inventory, shipments, and real-time tracking using modern enterprise and DevOps practices.
 
 This project is designed as a **career-grade portfolio** demonstrating how large-scale systems are planned, structured, and built in real-world enterprises.
+
+Each core module is implemented as an independent microservice with its own data store and deployment lifecycle.
 
 ---
 
@@ -25,7 +27,7 @@ This repository focuses not only on *what* is built, but *how* and *why* it is b
 - Domain-Driven Design (DDD)  
 - CQRS (Command Query Responsibility Segregation)  
 - Event-driven architecture  
-- Microservices-ready design  
+- Microservices-based architecture with independent deployability
 - Secure authentication and authorization  
 - Observability and monitoring  
 
@@ -33,11 +35,11 @@ This repository focuses not only on *what* is built, but *how* and *why* it is b
 
 ## 🧩 High-Level Architecture
 
-- Modular services with well-defined boundaries  
-- Synchronous communication via REST APIs  
-- Asynchronous communication via messaging  
+- Independently deployable microservices with well-defined bounded contexts
+- Synchronous communication via REST APIs
+- Asynchronous communication via event streaming and messaging
+- API Gateway for routing, security, and cross-cutting concerns
 - Centralized logging and metrics  
-- API Gateway for routing and security  
 
 ---
 
@@ -75,7 +77,7 @@ This repository focuses not only on *what* is built, but *how* and *why* it is b
 - Docker and Docker Compose  
 - CI/CD pipelines  
 - Environment-based configuration  
-- Cloud deployment readiness  
+- Cloud deployment readiness with Kubernetes orchestration
 
 ---
 
@@ -92,9 +94,19 @@ This repository focuses not only on *what* is built, but *how* and *why* it is b
 ```text
 smart-logistics-platform/
  ├─ src/
+ │   ├─ order-service/
+ │   ├─ inventory-service/
+ │   ├─ shipment-service/
+ │   ├─ notification-service/
+ │   ├─ auth-service/
+ │   └─ reporting-service/
  ├─ tests/
  ├─ docs/
- ├─ docker/
- ├─ .github/
+ ├─ devops/
+ │   ├─ docker/
+ │   ├─ compose/
+ │   ├─ kubernetes/
+ │   └─ pipelines/
  ├─ docker-compose.yml
  └─ README.md
+
