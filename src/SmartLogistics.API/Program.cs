@@ -5,8 +5,13 @@ using SmartLogistics.Application.Orders.Commands.CreateOrder;
 using SmartLogistics.Domain.Orders.Repositories;
 using SmartLogistics.Infrastructure.Observability;
 using SmartLogistics.Infrastructure.Persistence;
+using SmartLogistics.Infrastructure.Persistence.Interceptors;
 using SmartLogistics.Infrastructure.Persistence.Repositories;
 using System.Reflection;
+using OpenTelemetry;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Metrics;
 
 namespace SmartLogistics.API
 {
@@ -33,6 +38,45 @@ namespace SmartLogistics.API
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
             builder.Services.AddApplication();
+            builder.Services.AddScoped<DbCommandPerformanceInterceptor>();
+            builder.Services.AddDbContext<OrdersDbContext>((sp, options) =>
+            {
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("OrdersDb"));
+
+                options.AddInterceptors(
+                    sp.GetRequiredService<DbCommandPerformanceInterceptor>());
+            });
+
+            /* ---------- HTTP CLIENT ENFORCEMENT ---------- */
+            builder.Services.AddTransient<CorrelationDelegatingHandler>();
+
+            builder.Services.AddHttpClient("default")
+                .AddHttpMessageHandler<CorrelationDelegatingHandler>();
+
+            /* ---------- OPENTELEMETRY WIRING ---------- */
+            builder.Services.AddOpenTelemetry()
+    .ConfigureResource(resource =>
+    {
+        resource.AddService(
+            serviceName: "SmartLogistics.API",
+            serviceVersion: "1.0.0");
+    })
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddConsoleExporter(); // temporary, OK
+    })
+    .WithMetrics(metrics =>
+    {
+        metrics
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation()
+            .AddRuntimeInstrumentation()
+            .AddPrometheusExporter();
+    });
 
             var app = builder.Build();
 
@@ -50,6 +94,11 @@ namespace SmartLogistics.API
             app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
             app.UseMiddleware<RequestPerformanceMiddleware>();
+
+            /* ---------- PIPELINE ORDER MATTERS ---------- */
+            app.UseMiddleware<CorrelationMiddleware>();
+            app.UseRouting();
+            app.MapPrometheusScrapingEndpoint();
 
             app.MapControllers();
 
