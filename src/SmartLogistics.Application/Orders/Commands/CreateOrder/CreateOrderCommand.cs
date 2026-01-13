@@ -1,30 +1,28 @@
-namespace SmartLogistics.Application.Orders.Commands.CreateOrder
+using MediatR;
+using SmartLogistics.Application.Orders.Dtos;
+
+namespace SmartLogistics.Application.Orders.Commands.CreateOrder;
+
+/// <summary>
+/// Command representing the intent to create a new Order.
+/// Commands contain only the data required to perform
+/// a write operation and no business logic.
+/// </summary>
+public sealed class CreateOrderCommand : IRequest<Guid>
 {
     /// <summary>
-    /// Command representing the intent to create a new Order.
-    /// 
-    /// Commands are immutable and contain only the data
-    /// required to execute a write operation.
-    /// They do NOT contain business logic.
+    /// Business order number.
     /// </summary>
-    public sealed class CreateOrderCommand
-    {
-        /// <summary>
-        /// Identifier of the customer placing the order.
-        /// This value is required to associate the order
-        /// with its owner in the domain.
-        /// </summary>
-        public Guid CustomerId { get; }
+    public string OrderNumber { get; init; } = default!;
 
-        /// <summary>
-        /// Initializes a new instance of CreateOrderCommand.
-        /// </summary>
-        /// <param name="customerId">
-        /// Unique identifier of the customer.
-        /// </param>
-        public CreateOrderCommand(Guid customerId)
-        {
-            CustomerId = customerId;
-        }
-    }
+    /// <summary>
+    /// Identifier of the customer placing the order.
+    /// </summary>
+    public Guid CustomerId { get; init; }
+
+    /// <summary>
+    /// Items included in the order.
+    /// </summary>
+    public IReadOnlyCollection<CreateOrderItemDto> Items { get; init; }
+        = Array.Empty<CreateOrderItemDto>();
 }

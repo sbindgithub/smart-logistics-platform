@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using SmartLogistics.Application.Orders.Abstractions;
 using SmartLogistics.Application.Orders.Commands.CreateOrder;
 using SmartLogistics.Infrastructure.Persistence;
 using SmartLogistics.Infrastructure.Persistence.Repositories;
+using SmartLogistics.Domain.Orders.Repositories;
 
 namespace SmartLogistics.API
 {

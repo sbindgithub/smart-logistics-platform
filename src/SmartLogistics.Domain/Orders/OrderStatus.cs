@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SmartLogistics.Domain.Orders
-{
+namespace SmartLogistics.Domain.Orders;
+
     /// <summary>
     /// Represents the lifecycle states of an Order aggregate.
     /// The status controls which operations are valid at any point in time.
@@ -28,7 +28,9 @@ namespace SmartLogistics.Domain.Orders
         /// Order has been shipped to the customer.
         /// No further modifications are allowed.
         /// </summary>
-        Shipped = 3
-    }
+        Shipped = 3,
 
+        Confirmed = 4
 }
+
+

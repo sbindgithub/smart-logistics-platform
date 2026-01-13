@@ -1,39 +1,108 @@
-Event name
-Trigger
-Payload (high level, no code yet)
+# Order Events
 
-OrderCreated
+This document defines the **order-related events** emitted by the Orders bounded context.  
+Events are expressed in **business language** and represent **facts that have already occurred**.
 
-Trigger: Order instantiated in Draft state
+---
 
-Purpose: Audit, analytics
+## Event Design Rules
 
-Consumers: Reporting, Monitoring
+- Events describe **what happened**, not **what should happen next**
+- Events must be **immutable**
+- Events must not contain assumptions about downstream processing
+- Domain events are internal to the bounded context
+- Only integration events are published outside the bounded context
 
-OrderSubmitted
+---
 
-Trigger: User submits a draft order
+## Domain Events
 
-Purpose: Start validation workflows
+### 1. OrderCreated
 
-Consumers: Validation services
+**Trigger**  
+An Order is instantiated in the **Draft** state.
 
-OrderConfirmed
+**Purpose**
+- Audit trail
+- Operational analytics
+- Internal tracking
 
-Trigger: Order successfully validated and confirmed
+**Typical Consumers**
+- Reporting
+- Monitoring
 
-Purpose: Initiate downstream logistics processes
+**Notes**
+This event signals the existence of a new Order but does not imply readiness for processing.
 
-Consumers: Shipment, Inventory, Billing
+---
 
-OrderCancelled
+### 2. OrderSubmitted
 
-Trigger: Order cancelled before completion
+**Trigger**  
+A user submits a Draft Order for processing.
 
-Purpose: Stop downstream processing
+**Purpose**
+- Initiate validation workflows
+- Signal intent to proceed with order processing
 
-Consumers: All dependent contexts
+**Typical Consumers**
+- Validation services
+- Policy enforcement components
 
-Event Design Rule
-Events describe what happened, not what to do.
-No event contains downstream logic assumptions.
+**Notes**
+Submission does not guarantee validity or confirmation.
+
+---
+
+### 3. OrderConfirmed
+
+**Trigger**  
+An Order is successfully validated and transitions to the **Confirmed** state.
+
+**Purpose**
+- Initiate downstream logistics and commercial processes
+
+**Typical Consumers**
+- Shipment
+- Inventory
+- Billing
+
+**Notes**
+This is a **business-significant milestone** event.
+
+---
+
+### 4. OrderCancelled
+
+**Trigger**  
+An Order is cancelled before completion.
+
+**Purpose**
+- Stop or compensate downstream processing
+- Ensure consistency across dependent systems
+
+**Typical Consumers**
+- All dependent bounded contexts
+
+**Notes**
+Cancellation is a terminal state and must be respected by all consumers.
+
+---
+
+## Integration Events
+
+Integration events are derived from domain events and are published outside the Orders bounded context.
+
+### Integration Events Emitted
+- `OrderCreatedIntegrationEvent`
+- `OrderConfirmedIntegrationEvent`
+- `OrderCancelledIntegrationEvent`
+
+Only integration events cross bounded context boundaries.  
+Domain events remain internal and must not be consumed externally.
+
+---
+
+## Boundary Statement
+The Orders bounded context communicates with other systems **only through events**.  
+No external system is allowed to directly query or modify order state.

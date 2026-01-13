@@ -13,6 +13,42 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLogistics.Infrastructu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLogistics.API", "src\SmartLogistics.API\SmartLogistics.API.csproj", "{95386653-2FBD-4425-54EC-BDF2ECC8D17D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "domain", "domain", "{D31CDE3E-E5B9-4258-AD93-EC1053B36E83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "orders", "orders", "{798EC227-9D2B-4E7E-BDC4-11AE020F1E0E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\domain\orders\orders-aggregate.md = docs\domain\orders\orders-aggregate.md
+		docs\domain\orders\orders-context.md = docs\domain\orders\orders-context.md
+		docs\domain\orders\orders-events.md = docs\domain\orders\orders-events.md
+		docs\domain\orders\orders-invariants.md = docs\domain\orders\orders-invariants.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "adr", "adr", "{101F1150-B9D3-4355-A228-1D71D6058217}"
+	ProjectSection(SolutionItems) = preProject
+		docs\adr\ADR-001-why-cqrs.md = docs\adr\ADR-001-why-cqrs.md
+		docs\adr\ADR-002-ef-core-in-infrastructure-only.md = docs\adr\ADR-002-ef-core-in-infrastructure-only.md
+		docs\adr\ADR-003-why-mediatr.md = docs\adr\ADR-003-why-mediatr.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data-flow", "data-flow", "{4DE797A7-50A8-424C-A49F-AA2CD2FF358F}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\SARADA\OneDrive\Desktop\docs\data-flow\data-flow-level-0.md = C:\Users\SARADA\OneDrive\Desktop\docs\data-flow\data-flow-level-0.md
+		C:\Users\SARADA\OneDrive\Desktop\docs\data-flow\data-flow-level-1.md = C:\Users\SARADA\OneDrive\Desktop\docs\data-flow\data-flow-level-1.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{B1AE0346-3A9F-4DD4-916D-BE2B8790183E}"
+	ProjectSection(SolutionItems) = preProject
+		docs\architecture\architecture_TAD.md = docs\architecture\architecture_TAD.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "roadmap", "roadmap", "{A59473D0-22F2-4B51-B413-E2BFFF50A644}"
+	ProjectSection(SolutionItems) = preProject
+		docs\roadmap\project-vision.md = docs\roadmap\project-vision.md
+		docs\roadmap\roadmap.md = docs\roadmap\roadmap.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +80,12 @@ Global
 		{7212239C-E039-43A1-AF7D-81738D56ABFD} = {18B31F9B-E819-4954-B168-AF5679ACF85F}
 		{4A3F4F85-4CC9-4FE7-A021-462659ADDE3C} = {18B31F9B-E819-4954-B168-AF5679ACF85F}
 		{95386653-2FBD-4425-54EC-BDF2ECC8D17D} = {18B31F9B-E819-4954-B168-AF5679ACF85F}
+		{D31CDE3E-E5B9-4258-AD93-EC1053B36E83} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{798EC227-9D2B-4E7E-BDC4-11AE020F1E0E} = {D31CDE3E-E5B9-4258-AD93-EC1053B36E83}
+		{101F1150-B9D3-4355-A228-1D71D6058217} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{4DE797A7-50A8-424C-A49F-AA2CD2FF358F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B1AE0346-3A9F-4DD4-916D-BE2B8790183E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A59473D0-22F2-4B51-B413-E2BFFF50A644} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41572E27-0329-4934-AFD2-4EE69D91170C}

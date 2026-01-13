@@ -1,47 +1,59 @@
-Purpose of Orders BC
-Responsibilities
-Explicit exclusions
-Glossary (Order, OrderItem, SLA, etc.)
+# Orders Bounded Context
 
-Purpose
-The Orders bounded context is responsible for managing the complete lifecycle of customer orders, from creation through confirmation or cancellation. It represents the commercial intent to move goods and acts as the initiating context for downstream logistics processes.
+## Purpose
+The Orders bounded context is responsible for managing the complete lifecycle of customer orders, from creation through confirmation or cancellation.  
+It represents the **commercial intent to move goods** and acts as the initiating context for downstream logistics processes.
 
-Business Responsibility
-This context owns:
+Orders define *what* needs to happen; they do not execute *how* it happens operationally.
 
-Order creation and validation
+---
 
-Order lifecycle and state transitions
+## Business Responsibilities
+This bounded context owns:
 
-Enforcement of order-related business rules
+- Order creation and validation
+- Order lifecycle and state transitions
+- Enforcement of order-related business rules
+- Emission of order domain events
 
-Emission of order domain events
+The Orders bounded context is the **authoritative source of truth** for order state.
 
-This context does not execute logistics operations.
+---
 
-Explicit Exclusions
-The following concerns are intentionally outside this bounded context:
+## Explicit Exclusions
+The following concerns are intentionally **out of scope** for this bounded context:
 
-Shipment planning or execution
+- Shipment planning or execution
+- Inventory reservation or allocation
+- Billing and invoicing
+- Customer notifications
 
-Inventory reservation or allocation
+These responsibilities are handled by **separate bounded contexts** that react to order domain or integration events.
 
-Billing and invoicing
+---
 
-Customer notifications
+## Ubiquitous Language (Glossary)
 
-These are handled by separate bounded contexts that react to order domain events.
+- **Order**  
+  A commercial request to move goods under defined business conditions.
 
-Ubiquitous Language (Glossary)
+- **OrderItem**  
+  A line item representing a unit of goods within an order.
 
-Order: A commercial request to move goods under defined conditions
+- **OrderStatus**  
+  The current lifecycle state of an order (e.g., Draft, Submitted, Confirmed).
 
-OrderItem: A line item representing a unit of goods within an order
+- **OrderType**  
+  Classification of the order, such as Inbound or Outbound.
 
-OrderStatus: The current lifecycle state of an order
+- **SLA (Service Level Agreement)**  
+  A service-level commitment associated with an order, defining time or quality constraints.
 
-OrderType: Classification such as Inbound or Outbound
+- **Priority**  
+  The business importance assigned to an order, influencing processing behavior.
 
-SLA: Service-level commitment associated with an order
+---
 
-Priority: Business importance of the order
+## Boundary Statement
+The Orders bounded context defines **intent and commitment**, not execution.  
+Any system that requires order information must integrate via published events rather than direct access.
