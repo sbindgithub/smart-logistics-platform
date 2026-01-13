@@ -1,8 +1,12 @@
 using Microsoft.EntityFrameworkCore;
+using SmartLogistics.API.Middleware;
+using SmartLogistics.Application;
 using SmartLogistics.Application.Orders.Commands.CreateOrder;
+using SmartLogistics.Domain.Orders.Repositories;
+using SmartLogistics.Infrastructure.Observability;
 using SmartLogistics.Infrastructure.Persistence;
 using SmartLogistics.Infrastructure.Persistence.Repositories;
-using SmartLogistics.Domain.Orders.Repositories;
+using System.Reflection;
 
 namespace SmartLogistics.API
 {
@@ -26,6 +30,9 @@ namespace SmartLogistics.API
 
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<CreateOrderCommandHandler>();
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<ICorrelationContext, HttpCorrelationContext>();
+            builder.Services.AddApplication();
 
             var app = builder.Build();
 
@@ -40,10 +47,26 @@ namespace SmartLogistics.API
 
             app.UseAuthorization();
 
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<RequestPerformanceMiddleware>();
 
             app.MapControllers();
 
-            app.Run();
+            try
+            {
+                app.Run();
+            }
+            catch (ReflectionTypeLoadException ex)
+            {
+                foreach (var loaderException in ex.LoaderExceptions)
+                {
+                    Console.WriteLine(loaderException?.Message);
+                }
+
+                throw;
+            }
+
         }
     }
 }

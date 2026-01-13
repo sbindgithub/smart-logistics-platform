@@ -22,4 +22,11 @@ public class OrdersController : ControllerBase
         var orderId = await _mediator.Send(command);
         return CreatedAtAction(nameof(Create), new { id = orderId }, orderId);
     }
+
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok("Orders API is alive");
+    }
+
 }
