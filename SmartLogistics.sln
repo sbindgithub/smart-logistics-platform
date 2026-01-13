@@ -49,6 +49,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "roadmap", "roadmap", "{A594
 		docs\roadmap\roadmap.md = docs\roadmap\roadmap.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{6FCEED07-9952-4EDE-83AF-57E17BF549DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLogistics.ArchitectureTests", "SmartLogistics.ArchitectureTests\SmartLogistics.ArchitectureTests.csproj", "{A8654873-4629-4B16-8F1F-6EBAED460CDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +75,10 @@ Global
 		{95386653-2FBD-4425-54EC-BDF2ECC8D17D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95386653-2FBD-4425-54EC-BDF2ECC8D17D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95386653-2FBD-4425-54EC-BDF2ECC8D17D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8654873-4629-4B16-8F1F-6EBAED460CDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8654873-4629-4B16-8F1F-6EBAED460CDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8654873-4629-4B16-8F1F-6EBAED460CDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8654873-4629-4B16-8F1F-6EBAED460CDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +94,7 @@ Global
 		{4DE797A7-50A8-424C-A49F-AA2CD2FF358F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{B1AE0346-3A9F-4DD4-916D-BE2B8790183E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A59473D0-22F2-4B51-B413-E2BFFF50A644} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{A8654873-4629-4B16-8F1F-6EBAED460CDA} = {6FCEED07-9952-4EDE-83AF-57E17BF549DA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41572E27-0329-4934-AFD2-4EE69D91170C}
