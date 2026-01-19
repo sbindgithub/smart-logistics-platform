@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿namespace SmartLogistics.Api.Middleware;
 
 public sealed class CorrelationMiddleware
 {
@@ -10,27 +10,15 @@ public sealed class CorrelationMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, ILogger<CorrelationMiddleware> logger)
+    public async Task Invoke(HttpContext context)
     {
-        var correlationId =
-            context.Request.Headers.TryGetValue(HeaderName, out var value)
-                ? value.ToString()
-                : Guid.NewGuid().ToString();
-
-        context.Response.Headers[HeaderName] = correlationId;
-
-        if (Activity.Current != null)
+        if (!context.Request.Headers.TryGetValue(HeaderName, out var cid))
         {
-            Activity.Current.SetTag("correlation.id", correlationId);
-            Activity.Current.AddBaggage("correlation.id", correlationId);
+            cid = Guid.NewGuid().ToString();
+            context.Request.Headers[HeaderName] = cid;
         }
 
-        using (logger.BeginScope(new Dictionary<string, object>
-        {
-            ["CorrelationId"] = correlationId
-        }))
-        {
-            await _next(context);
-        }
+        context.Response.Headers[HeaderName] = cid!;
+        await _next(context);
     }
 }

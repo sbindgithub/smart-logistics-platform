@@ -8,10 +8,8 @@ using SmartLogistics.Infrastructure.Persistence;
 using SmartLogistics.Infrastructure.Persistence.Interceptors;
 using SmartLogistics.Infrastructure.Persistence.Repositories;
 using System.Reflection;
-using OpenTelemetry;
-using OpenTelemetry.Trace;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Metrics;
+using SmartLogistics.Observability.Tracing;
+
 
 namespace SmartLogistics.API
 {
@@ -55,28 +53,7 @@ namespace SmartLogistics.API
                 .AddHttpMessageHandler<CorrelationDelegatingHandler>();
 
             /* ---------- OPENTELEMETRY WIRING ---------- */
-            builder.Services.AddOpenTelemetry()
-    .ConfigureResource(resource =>
-    {
-        resource.AddService(
-            serviceName: "SmartLogistics.API",
-            serviceVersion: "1.0.0");
-    })
-    .WithTracing(tracing =>
-    {
-        tracing
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddConsoleExporter(); // temporary, OK
-    })
-    .WithMetrics(metrics =>
-    {
-        metrics
-            .AddAspNetCoreInstrumentation()
-            .AddHttpClientInstrumentation()
-            .AddRuntimeInstrumentation()
-            .AddPrometheusExporter();
-    });
+            builder.Services.AddSmartLogisticsTracing(builder.Configuration);
 
             var app = builder.Build();
 
