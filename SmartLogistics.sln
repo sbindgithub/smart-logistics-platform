@@ -41,6 +41,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "architecture", "architecture", "{B1AE0346-3A9F-4DD4-916D-BE2B8790183E}"
 	ProjectSection(SolutionItems) = preProject
 		docs\architecture\architecture_TAD.md = docs\architecture\architecture_TAD.md
+		observabilityArchitecture.md = observabilityArchitecture.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "roadmap", "roadmap", "{A59473D0-22F2-4B51-B413-E2BFFF50A644}"
