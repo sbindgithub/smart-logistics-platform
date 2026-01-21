@@ -1,4 +1,4 @@
-﻿namespace SmartLogistics.Application;
+﻿namespace SmartLogistics.Application.Common;
 
 public interface ICorrelationContext
 {

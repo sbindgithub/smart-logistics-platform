@@ -13,4 +13,8 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.14.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SmartLogistics.Application\SmartLogistics.Application.csproj" />
+  </ItemGroup>
+
 </Project>

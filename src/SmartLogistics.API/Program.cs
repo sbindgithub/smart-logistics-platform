@@ -1,14 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using SmartLogistics.API.Correlation;
 using SmartLogistics.API.Middleware;
 using SmartLogistics.Application;
+using SmartLogistics.Application.Common;
+using SmartLogistics.Application.Orders;
 using SmartLogistics.Application.Orders.Commands.CreateOrder;
 using SmartLogistics.Domain.Orders.Repositories;
-using SmartLogistics.Infrastructure.Observability;
 using SmartLogistics.Infrastructure.Persistence;
 using SmartLogistics.Infrastructure.Persistence.Interceptors;
 using SmartLogistics.Infrastructure.Persistence.Repositories;
+//using SmartLogistics.Observability.Common;
+//using SmartLogistics.Observability.Tracing;
 using System.Reflection;
-using SmartLogistics.Observability.Tracing;
+using SmartLogistics.Api.Middleware;
 
 
 namespace SmartLogistics.API
@@ -25,11 +29,6 @@ namespace SmartLogistics.API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            builder.Services.AddDbContext<OrdersDbContext>(options =>
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("OrdersDb"));
-            });
 
             builder.Services.AddScoped<IOrderRepository, OrderRepository>();
             builder.Services.AddScoped<CreateOrderCommandHandler>();
@@ -53,7 +52,9 @@ namespace SmartLogistics.API
                 .AddHttpMessageHandler<CorrelationDelegatingHandler>();
 
             /* ---------- OPENTELEMETRY WIRING ---------- */
-            builder.Services.AddSmartLogisticsTracing(builder.Configuration);
+            //builder.Services.AddSmartLogisticsTracing(builder.Configuration);
+            //builder.Services.AddScoped(typeof(CorrelatedLogger<>));
+            builder.Services.AddScoped<IOrderService, OrderService>();
 
             var app = builder.Build();
 
@@ -68,16 +69,18 @@ namespace SmartLogistics.API
 
             app.UseAuthorization();
 
-            app.UseMiddleware<CorrelationIdMiddleware>();
             app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<CorrelationIdMiddleware>();
+            app.UseMiddleware<RequestTimingMiddleware>();
             app.UseMiddleware<RequestPerformanceMiddleware>();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.MapControllers();
+            //app.MapPrometheusScrapingEndpoint();
 
             /* ---------- PIPELINE ORDER MATTERS ---------- */
             app.UseMiddleware<CorrelationMiddleware>();
-            app.UseRouting();
-            app.MapPrometheusScrapingEndpoint();
-
-            app.MapControllers();
+            
 
             try
             {

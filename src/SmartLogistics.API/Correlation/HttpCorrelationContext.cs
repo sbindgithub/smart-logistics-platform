@@ -1,4 +1,4 @@
-﻿using SmartLogistics.Application;
+﻿using SmartLogistics.Application.Common;
 
 namespace SmartLogistics.API.Correlation
 {
