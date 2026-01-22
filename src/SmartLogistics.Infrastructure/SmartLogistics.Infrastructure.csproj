@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartLogistics.Observability\SmartLogistics.Observability.csproj" />
+    <ProjectReference Include="..\SmartLogistics.Application\SmartLogistics.Application.csproj" />
+    <ProjectReference Include="..\SmartLogistics.Domain\SmartLogistics.Domain.csproj" />
   </ItemGroup>
 
 </Project>

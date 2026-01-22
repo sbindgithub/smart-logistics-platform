@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
+using SmartLogistics.Application.Common;
 using System.Data.Common;
 
 namespace SmartLogistics.Infrastructure.Persistence.Interceptors;
