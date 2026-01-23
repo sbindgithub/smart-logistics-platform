@@ -2,11 +2,9 @@
 using NetArchTest.Rules;
 // IMPORTANT:
 // Adjust this using to the ACTUAL namespace where IOrderRepository exists
-using SmartLogistics.Application;
 using SmartLogistics.Domain.Orders;
 using SmartLogistics.Domain.Orders.Repositories;
 using SmartLogistics.Infrastructure.Persistence;
-using Xunit;
 
 namespace SmartLogistics.ArchitectureTests.Architecture;
 
