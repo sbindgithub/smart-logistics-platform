@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SmartLogistics.Application.Orders.Commands.CreateOrder;
+using SmartLogistics.Application.Orders.Commands.ConfirmOrder;
 
-namespace SmartLogistics.API.Controllers;
+namespace SmartLogistics.Api.Controllers;
 
 [ApiController]
 [Route("api/orders")]
-public class OrdersController : ControllerBase
+public sealed class OrdersController : ControllerBase
 {
     private readonly IMediator _mediator;
 
@@ -15,18 +16,60 @@ public class OrdersController : ControllerBase
         _mediator = mediator;
     }
 
+    /// <summary>
+    /// Creates a new order.
+    /// </summary>
+    /// <remarks>
+    /// Returns 201 Created with the order id.
+    /// </remarks>
     [HttpPost]
     public async Task<IActionResult> Create(
-        [FromBody] CreateOrderCommand command)
+        [FromBody] CreateOrderCommand command,
+        CancellationToken ct)
     {
-        var orderId = await _mediator.Send(command);
-        return CreatedAtAction(nameof(Create), new { id = orderId }, orderId);
+        var orderId = await _mediator.Send(command, ct);
+
+        return CreatedAtAction(
+            nameof(GetById),
+            new { id = orderId },
+            new { id = orderId });
     }
 
-    [HttpGet]
-    public IActionResult Get()
+    /// <summary>
+    /// Confirms an existing order.
+    /// </summary>
+    /// <remarks>
+    /// Returns:
+    /// 204 - success  
+    /// 404 - order not found  
+    /// 409 - concurrency conflict  
+    /// </remarks>
+    [HttpPost("{id:guid}/confirm")]
+    public async Task<IActionResult> Confirm(Guid id, CancellationToken ct)
+    {
+        await _mediator.Send(new ConfirmOrderCommand(id), ct);
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Simple liveness endpoint.
+    /// </summary>
+    [HttpGet("health")]
+    public IActionResult Health()
     {
         return Ok("Orders API is alive");
     }
 
+    /// <summary>
+    /// Placeholder for GetById (to be implemented next).
+    /// </summary>
+    /// <remarks>
+    /// This exists so CreatedAtAction works correctly.
+    /// </remarks>
+    [HttpGet("{id:guid}")]
+    public IActionResult GetById(Guid id)
+    {
+        // Will be replaced with a proper query handler next
+        return Ok(new { id });
+    }
 }

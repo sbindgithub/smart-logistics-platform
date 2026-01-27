@@ -178,6 +178,8 @@ public class Program
         app.UseMiddleware<RequestPerformanceMiddleware>();
 
         app.UseRouting();
+        app.UseMiddleware<GlobalExceptionMiddleware>();
+
         app.UseAuthorization();
 
         app.MapControllers();
