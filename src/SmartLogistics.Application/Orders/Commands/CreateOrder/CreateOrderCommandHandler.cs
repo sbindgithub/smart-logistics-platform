@@ -4,7 +4,7 @@ using SmartLogistics.Domain.Orders.Repositories;
 
 namespace SmartLogistics.Application.Orders.Commands.CreateOrder;
 
-public class CreateOrderCommandHandler
+public sealed class CreateOrderCommandHandler
     : IRequestHandler<CreateOrderCommand, Guid>
 {
     private readonly IOrderRepository _orderRepository;
@@ -15,8 +15,8 @@ public class CreateOrderCommandHandler
     }
 
     public async Task<Guid> Handle(
-    CreateOrderCommand request,
-    CancellationToken cancellationToken)
+        CreateOrderCommand request,
+        CancellationToken cancellationToken)
     {
         var order = Order.Create(
             request.OrderNumber,
@@ -28,5 +28,4 @@ public class CreateOrderCommandHandler
 
         return order.Id;
     }
-
 }

@@ -13,13 +13,23 @@ public class OrderEntityConfiguration : IEntityTypeConfiguration<Order>
 
         builder.HasKey(o => o.Id);
 
+        builder.Property(o => o.OrderNumber)
+               .IsRequired()
+               .HasMaxLength(50);
+
+        builder.Property(o => o.CustomerId)
+               .IsRequired();
+
         builder.Property(o => o.Status)
                .IsRequired();
 
         builder.Property(o => o.CreatedAt)
                .IsRequired();
 
-        // ✅ THIS IS REQUIRED
+        // ✅ Optimistic concurrency token (shadow property)
+        builder.Property<byte[]>("RowVersion")
+               .IsRowVersion();
+
         builder.OwnsMany(o => o.Items, items =>
         {
             items.ToTable("OrderItems");
@@ -27,15 +37,12 @@ public class OrderEntityConfiguration : IEntityTypeConfiguration<Order>
             items.WithOwner()
                  .HasForeignKey("OrderId");
 
-            // Shadow key – required by EF, not by your domain
             items.Property<Guid>("Id");
             items.HasKey("Id");
 
-            items.Property(i => i.ProductId)
-                 .IsRequired();
-
-            items.Property(i => i.Quantity)
-                 .IsRequired();
+            items.Property(i => i.ProductId).IsRequired();
+            items.Property(i => i.Quantity).IsRequired();
         });
     }
 }
+

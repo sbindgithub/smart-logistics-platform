@@ -99,8 +99,10 @@
 //        }
 //    }
 //}
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SmartLogistics.Api.Middleware;
+using SmartLogistics.Api.Pipeline;
 using SmartLogistics.API.Correlation;
 using SmartLogistics.API.Middleware;
 using SmartLogistics.Application;
@@ -154,6 +156,9 @@ public class Program
         /* ---------- OBSERVABILITY ---------- */
         builder.Services.AddSmartLogisticsTracing(builder.Configuration);
         builder.Services.AddScoped(typeof(IAppLogger<>), typeof(CorrelatedLogger<>));
+        builder.Services.AddTransient(
+            typeof(IPipelineBehavior<,>),
+            typeof(ConcurrencyBehavior<,>));
 
         var app = builder.Build();
 

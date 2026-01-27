@@ -12,7 +12,7 @@ using SmartLogistics.Infrastructure.Persistence;
 namespace SmartLogistics.Infrastructure.Migrations
 {
     [DbContext(typeof(OrdersDbContext))]
-    [Migration("20251229174856_InitialOrders")]
+    [Migration("20260127094219_InitialOrders")]
     partial class InitialOrders
     {
         /// <inheritdoc />
@@ -34,12 +34,50 @@ namespace SmartLogistics.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("OrderNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Orders", (string)null);
+                });
+
+            modelBuilder.Entity("SmartLogistics.Domain.Orders.Order", b =>
+                {
+                    b.OwnsMany("SmartLogistics.Domain.Orders.OrderItem", "Items", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("OrderId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Quantity")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("OrderId");
+
+                            b1.ToTable("OrderItems", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+                        });
+
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }
