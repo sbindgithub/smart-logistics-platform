@@ -57,6 +57,30 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLogistics.Architecture
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartLogistics.Observability", "src\SmartLogistics.Observability\SmartLogistics.Observability.csproj", "{6E45C2F2-43DB-4354-A81C-F88173872448}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{CFB38220-EB4E-4E58-996F-F494988E2368}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\README.md = scripts\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "db", "db", "{64696575-AD5F-423E-A520-B280778F5D85}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\db\migrate.ps1 = scripts\db\migrate.ps1
+		scripts\db\reset-db.ps1 = scripts\db\reset-db.ps1
+		scripts\db\update-db.ps1 = scripts\db\update-db.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{FB275498-731B-4914-AE07-E1B0A185B79E}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\api\run-api-dev.ps1 = scripts\api\run-api-dev.ps1
+		scripts\api\run-api.ps1 = scripts\api\run-api.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "diagnostics", "diagnostics", "{7CD87055-D9E1-45AA-9384-089D458A742E}"
+	ProjectSection(SolutionItems) = preProject
+		scripts\diagnostics\simulate-error.ps1 = scripts\diagnostics\simulate-error.ps1
+		scripts\diagnostics\simulate-timeout.ps1 = scripts\diagnostics\simulate-timeout.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +128,9 @@ Global
 		{A59473D0-22F2-4B51-B413-E2BFFF50A644} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{A8654873-4629-4B16-8F1F-6EBAED460CDA} = {6FCEED07-9952-4EDE-83AF-57E17BF549DA}
 		{6E45C2F2-43DB-4354-A81C-F88173872448} = {18B31F9B-E819-4954-B168-AF5679ACF85F}
+		{64696575-AD5F-423E-A520-B280778F5D85} = {CFB38220-EB4E-4E58-996F-F494988E2368}
+		{FB275498-731B-4914-AE07-E1B0A185B79E} = {CFB38220-EB4E-4E58-996F-F494988E2368}
+		{7CD87055-D9E1-45AA-9384-089D458A742E} = {CFB38220-EB4E-4E58-996F-F494988E2368}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41572E27-0329-4934-AFD2-4EE69D91170C}
