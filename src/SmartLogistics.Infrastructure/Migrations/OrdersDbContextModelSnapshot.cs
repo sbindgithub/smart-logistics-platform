@@ -10,7 +10,7 @@ using SmartLogistics.Infrastructure.Persistence;
 
 namespace SmartLogistics.Infrastructure.Migrations
 {
-    [DbContext(typeof(OrdersDbContext))]
+    [DbContext(typeof(SmartLogisticsDbContext))]
     partial class OrdersDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

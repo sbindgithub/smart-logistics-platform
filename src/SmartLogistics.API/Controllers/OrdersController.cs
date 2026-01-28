@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SmartLogistics.Application.Orders.Commands.CreateOrder;
 using SmartLogistics.Application.Orders.Commands.ConfirmOrder;
+using SmartLogistics.Application.Orders.Queries.GetOrders;
 
 namespace SmartLogistics.Api.Controllers;
 
@@ -72,4 +73,14 @@ public sealed class OrdersController : ControllerBase
         // Will be replaced with a proper query handler next
         return Ok(new { id });
     }
+
+    [HttpGet]
+    public async Task<IActionResult> GetAll(CancellationToken ct)
+    {
+        var orders = await _mediator.Send(new GetOrdersQuery(), ct);
+        return Ok(orders);
+    }
+
+   
+
 }

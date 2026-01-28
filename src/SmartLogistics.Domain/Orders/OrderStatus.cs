@@ -18,19 +18,21 @@ namespace SmartLogistics.Domain.Orders;
         /// </summary>
         Created = 1,
 
+        Confirmed = 2,
+
         /// <summary>
         /// Order has been cancelled and can no longer progress.
         /// This is a terminal state.
         /// </summary>
-        Cancelled = 2,
+        Cancelled = 3,
 
         /// <summary>
         /// Order has been shipped to the customer.
         /// No further modifications are allowed.
         /// </summary>
-        Shipped = 3,
+        Shipped = 4
 
-        Confirmed = 4
+       
 }
 
 

@@ -6,9 +6,9 @@ namespace SmartLogistics.Infrastructure.Persistence.Repositories;
 
 public class OrderRepository : IOrderRepository
 {
-    private readonly OrdersDbContext _dbContext;
+    private readonly SmartLogisticsDbContext _dbContext;
 
-    public OrderRepository(OrdersDbContext dbContext)
+    public OrderRepository(SmartLogisticsDbContext dbContext)
     {
         _dbContext = dbContext;
     }

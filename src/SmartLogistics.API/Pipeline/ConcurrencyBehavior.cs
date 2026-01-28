@@ -4,8 +4,10 @@ using SmartLogistics.Application.Common.Exceptions;
 
 namespace SmartLogistics.Api.Pipeline;
 
-public sealed class ConcurrencyBehavior<TRequest, TResponse>
+public class ConcurrencyBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : notnull
+
 {
     public async Task<TResponse> Handle(
         TRequest request,

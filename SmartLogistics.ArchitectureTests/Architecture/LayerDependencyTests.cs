@@ -45,7 +45,7 @@ public class LayerDependencyTests
     public void Infrastructure_Should_Not_Depend_On_Presentation_Layer()
     {
         var result = Types
-            .InAssembly(typeof(OrdersDbContext).Assembly)
+            .InAssembly(typeof(SmartLogisticsDbContext).Assembly)
             .ShouldNot()
             .HaveDependencyOnAny(
                 "SmartLogistics.API",

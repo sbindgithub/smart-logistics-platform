@@ -11,7 +11,7 @@ using SmartLogistics.Infrastructure.Persistence;
 
 namespace SmartLogistics.Infrastructure.Migrations
 {
-    [DbContext(typeof(OrdersDbContext))]
+    [DbContext(typeof(SmartLogisticsDbContext))]
     [Migration("20260127100252_AddOrderRowVersion")]
     partial class AddOrderRowVersion
     {
