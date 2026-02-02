@@ -1,10 +1,8 @@
-﻿using FluentAssertions;
-using NetArchTest.Rules;
-// IMPORTANT:
-// Adjust this using to the ACTUAL namespace where IOrderRepository exists
+﻿using NetArchTest.Rules;
 using SmartLogistics.Domain.Orders;
 using SmartLogistics.Domain.Orders.Repositories;
 using SmartLogistics.Infrastructure.Persistence;
+using Xunit;
 
 namespace SmartLogistics.ArchitectureTests.Architecture;
 
@@ -22,8 +20,9 @@ public class LayerDependencyTests
                 "Microsoft.EntityFrameworkCore")
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(
-            "Domain must be independent of application and infrastructure");
+        Assert.True(
+            result.IsSuccessful,
+            "Domain layer must not depend on Application, Infrastructure, or EF Core");
     }
 
     [Fact]
@@ -37,8 +36,9 @@ public class LayerDependencyTests
                 "Microsoft.EntityFrameworkCore")
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(
-            "Application must not reference infrastructure");
+        Assert.True(
+            result.IsSuccessful,
+            "Application layer must not depend on Infrastructure or EF Core");
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public class LayerDependencyTests
                 "Microsoft.AspNetCore")
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(
-            "Infrastructure must not depend on API or web concerns");
+        Assert.True(
+            result.IsSuccessful,
+            "Infrastructure layer must not depend on API or ASP.NET concerns");
     }
-
 }

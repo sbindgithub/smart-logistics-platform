@@ -1,5 +1,5 @@
 ﻿namespace SmartLogistics.Domain.Orders;
-
+using SmartLogistics.Domain.Common;
 public class Order
 {
     private readonly List<OrderItem> _items = new();
@@ -15,6 +15,9 @@ public class Order
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
     private Order() { } // EF Core
+    private readonly List<DomainEvent> _domainEvents = new();
+
+    public IReadOnlyCollection<DomainEvent> DomainEvents => _domainEvents.AsReadOnly();
 
     private Order(string orderNumber, Guid customerId)
     {
@@ -58,17 +61,38 @@ public class Order
 
     public void Confirm()
     {
+        if (Status == OrderStatus.Cancelled)
+            throw new InvalidOperationException("Cancelled orders cannot be confirmed.");
+
         if (Status != OrderStatus.Created)
             throw new InvalidOperationException("Only created orders can be confirmed.");
 
         Status = OrderStatus.Confirmed;
+
+        RaiseDomainEvent(new Orders.Events.OrderConfirmed(Id));
     }
+
 
     public void Cancel()
     {
+        if (Status == OrderStatus.Confirmed)
+            throw new InvalidOperationException("Confirmed orders cannot be cancelled.");
+
         if (Status == OrderStatus.Cancelled)
             throw new InvalidOperationException("Order is already cancelled.");
 
         Status = OrderStatus.Cancelled;
+
+        RaiseDomainEvent(new Orders.Events.OrderCancelled(Id));
+    }
+
+    private void RaiseDomainEvent(DomainEvent domainEvent)
+    {
+        _domainEvents.Add(domainEvent);
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 }
