@@ -16,12 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Using Include="Xunit" />
+    <ProjectReference Include="..\..\src\SmartLogistics.Application\SmartLogistics.Application.csproj" />
+    <ProjectReference Include="..\..\src\SmartLogistics.Domain\SmartLogistics.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SmartLogistics.Application\SmartLogistics.Application.csproj" />
-    <ProjectReference Include="..\src\SmartLogistics.Domain\SmartLogistics.Domain.csproj" />
+    <Using Include="Xunit" />
   </ItemGroup>
 
 </Project>

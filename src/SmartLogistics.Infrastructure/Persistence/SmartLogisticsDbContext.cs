@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using SmartLogistics.Domain.Common;
 using SmartLogistics.Domain.Orders;
 using SmartLogistics.Domain.Orders.Repositories;
 using SmartLogistics.Infrastructure.Common.Events;
@@ -32,11 +33,14 @@ public sealed class SmartLogisticsDbContext
     }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Ignore<DomainEvent>();
+
         modelBuilder.ApplyConfigurationsFromAssembly(
             typeof(SmartLogisticsDbContext).Assembly);
 
         base.OnModelCreating(modelBuilder);
     }
+
     private async Task DispatchDomainEventsAsync(CancellationToken cancellationToken)
     {
         var domainEntities = ChangeTracker

@@ -1,27 +1,32 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Formatting.Compact;
 using SmartLogistics.Api.Middleware;
 using SmartLogistics.Api.Pipeline;
 using SmartLogistics.API.Correlation;
 using SmartLogistics.API.Middleware;
 using SmartLogistics.Application;
 using SmartLogistics.Application.Common;
-using SmartLogistics.Application.Orders;
-using SmartLogistics.Domain.Orders.Repositories;
-using SmartLogistics.Infrastructure.Persistence;
-using SmartLogistics.Infrastructure.Persistence.Interceptors;
-using SmartLogistics.Infrastructure.Persistence.Repositories;
+using SmartLogistics.Infrastructure.DependencyInjection;
 using SmartLogistics.Observability.Common;
 using SmartLogistics.Observability.Tracing;
-using SmartLogistics.Infrastructure.DependencyInjection;
+using Prometheus;
 
 namespace SmartLogistics.API;
 
-public class Program
+public partial class Program
 {
     public static void Main(string[] args)
     {
+        Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console(new RenderedCompactJsonFormatter())
+    .CreateLogger();
+
         var builder = WebApplication.CreateBuilder(args);
+
+        builder.Host.UseSerilog();
+
 
         /* ---------- MVC / SWAGGER ---------- */
         builder.Services.AddControllers();
@@ -34,19 +39,20 @@ public class Program
 
         /* ---------- APPLICATION LAYER ---------- */
         builder.Services.AddApplication();
+        builder.Services.AddObservability();
 
         /* ---------- INFRASTRUCTURE ---------- */
-        builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+        //builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
-        builder.Services.AddScoped<DbCommandPerformanceInterceptor>();
-        builder.Services.AddDbContext<SmartLogisticsDbContext>((sp, options) =>
-        {
-            options.UseSqlServer(
-                builder.Configuration.GetConnectionString("OrdersDb"));
+        //builder.Services.AddScoped<DbCommandPerformanceInterceptor>();
+        //builder.Services.AddDbContext<SmartLogisticsDbContext>((sp, options) =>
+        //{
+        //    options.UseSqlServer(
+        //        builder.Configuration.GetConnectionString("OrdersDb"));
 
-            options.AddInterceptors(
-                sp.GetRequiredService<DbCommandPerformanceInterceptor>());
-        });
+        //    options.AddInterceptors(
+        //        sp.GetRequiredService<DbCommandPerformanceInterceptor>());
+        //});
 
         /* ---------- HTTP CLIENT (OUTGOING CORRELATION) ---------- */
         builder.Services.AddTransient<CorrelationDelegatingHandler>();
@@ -61,9 +67,12 @@ public class Program
             typeof(ConcurrencyBehavior<,>));
 
         builder.Services.AddInfrastructure(builder.Configuration);
+      
 
 
         var app = builder.Build();
+        app.UseHttpMetrics();    // captures HTTP metrics
+        app.MapMetrics();        // exposes /metrics
 
         /* ---------- DEV TOOLS ---------- */
         if (app.Environment.IsDevelopment())
@@ -84,6 +93,15 @@ public class Program
         app.UseMiddleware<GlobalExceptionMiddleware>();
 
         app.UseAuthorization();
+        app.UseSerilogRequestLogging(options =>
+        {
+            options.EnrichDiagnosticContext = (ctx, http) =>
+            {
+                ctx.Set("CorrelationId", http.TraceIdentifier);
+                ctx.Set("Path", http.Request.Path);
+                ctx.Set("Method", http.Request.Method);
+            };
+        });
 
         app.MapControllers();
         var cs = builder.Configuration.GetConnectionString("OrdersDb");
@@ -92,4 +110,6 @@ public class Program
         app.Run();
     }
 }
+
+public partial class Program { }
 

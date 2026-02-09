@@ -18,8 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SmartLogistics.Domain\SmartLogistics.Domain.csproj" />
-    <ProjectReference Include="..\src\SmartLogistics.Infrastructure\SmartLogistics.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\src\SmartLogistics.Domain\SmartLogistics.Domain.csproj" />
+    <ProjectReference Include="..\..\src\SmartLogistics.Infrastructure\SmartLogistics.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
