@@ -1,0 +1,6 @@
+﻿namespace SmartLogistics.Application.Common;
+
+public interface ICorrelationContext
+{
+    string CorrelationId { get; }
+}
